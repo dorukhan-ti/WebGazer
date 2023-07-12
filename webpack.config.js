@@ -9,7 +9,6 @@ const bannerString =`
  Licensed under GPLv3. Companies with a valuation of less than $1M can use WebGazer.js under LGPLv3.
  `;
 
-<<<<<<< HEAD
 const varConfig = {
 	entry: './src/index.mjs',
 	output: {
@@ -97,44 +96,3 @@ const commonjs2Config = {
 };
 
 module.exports = [varConfig, commonjs2Config]
-=======
-function createConfig(options) {
-  return {
-    entry: './src/index.mjs',
-    output: {
-      filename: 'webgazer' + 
-		(options.target == 'var' ? '' : '.' + options.target) + 
-		(options.minified ? '.min' : '') + 
-		'.js',
-      library: 'webgazer',
-      libraryTarget: options.target,
-      libraryExport: 'default',
-      path: path.resolve(__dirname, 'dist'),
-    },
-    module: {
-      rules: [
-        {
-          test: /\.mjs$/,
-          type: 'javascript/esm',
-          exclude: /node_modules/
-        }
-      ]
-    },
-    optimization: {
-      // if using google extension manifest v3 set to true
-      minimize: options.minified
-    },
-    resolve: {
-      extensions: [".mjs", ".webpack.js", ".web.js", ".js", ".json"]
-    },
-    plugins: [
-      new webpack.BannerPlugin(bannerString),
-    ],
-    devtool: "source-map"
-  };
-}
-module.exports = createVariants({
-  minified: [true, false],
-  target: ['var','commonjs2']
-}, createConfig);
->>>>>>> 6cb26d4 (remove numeric new tensorflow model "face-landmarks-detection")
