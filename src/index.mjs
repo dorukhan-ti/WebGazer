@@ -9,7 +9,6 @@ import localforage from 'localforage';
 import TFFaceMesh from './facemesh';
 import Reg from './ridgeReg';
 import ridgeRegWeighted from './ridgeWeightedReg';
-import ridgeRegThreaded from './ridgeRegThreaded';
 import util from './util';
 
 const webgazer = {};
@@ -17,7 +16,6 @@ webgazer.tracker = {};
 webgazer.tracker.TFFaceMesh = TFFaceMesh;
 webgazer.reg = Reg;
 webgazer.reg.RidgeWeightedReg = ridgeRegWeighted.RidgeWeightedReg;
-webgazer.reg.RidgeRegThreaded = ridgeRegThreaded.RidgeRegThreaded;
 webgazer.util = util;
 webgazer.params = params;
 
@@ -68,7 +66,6 @@ var curTrackerMap = {
 var regressionMap = {
   'ridge': function() { return new webgazer.reg.RidgeReg(); },
   'weightedRidge': function() { return new webgazer.reg.RidgeWeightedReg(); },
-  'threadedRidge': function() { return new webgazer.reg.RidgeRegThreaded(); },
 };
 
 //localstorage name
@@ -839,7 +836,7 @@ webgazer.showPredictionPoints = function(val) {
  * Set whether previous calibration data (from localforage) should be loaded.
  * Default true.
  *
- * NOTE: Should be called before webgazer.begin() -- see www/js/main.js for example
+ * NOTE: Should be called before webgazer.begin()
  *
  * @param val
  * @returns {webgazer} this

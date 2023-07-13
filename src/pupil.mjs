@@ -1,3 +1,5 @@
+import webgazer from './index';
+
 const pupil = {};
 
 /**

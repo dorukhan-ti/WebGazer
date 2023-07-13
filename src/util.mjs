@@ -1,3 +1,4 @@
+import webgazer from './index';
 import mat from './mat';
 import params from './params';
 
