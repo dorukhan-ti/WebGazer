@@ -1,6 +1,6 @@
-import util from './util';
-import util_regression from './util_regression';
-import params from './params';
+import util from "./util";
+import util_regression from "./util_regression";
+import params from "./params";
 
 const reg = {};
 
@@ -9,14 +9,14 @@ const reg = {};
  * this object allow to perform ridge regression
  * @constructor
  */
-reg.RidgeReg = function() {
+reg.RidgeReg = function () {
   this.init();
 };
 
 /**
  * Initialize new arrays and initialize Kalman filter.
  */
-reg.RidgeReg.prototype.init = util_regression.InitRegression
+reg.RidgeReg.prototype.init = util_regression.InitRegression;
 
 /**
  * Add given data from eyes
@@ -24,7 +24,7 @@ reg.RidgeReg.prototype.init = util_regression.InitRegression
  * @param {Object} screenPos - The current screen point
  * @param {Object} type - The type of performed action
  */
-reg.RidgeReg.prototype.addData = util_regression.addData
+reg.RidgeReg.prototype.addData = util_regression.addData;
 
 /**
  * Try to predict coordinates from pupil data
@@ -32,7 +32,7 @@ reg.RidgeReg.prototype.addData = util_regression.addData
  * @param {Object} eyesObj - The current user eyes object
  * @returns {Object}
  */
-reg.RidgeReg.prototype.predict = function(eyesObj) {
+reg.RidgeReg.prototype.predict = function (eyesObj) {
   if (!eyesObj || this.eyeFeaturesClicks.length === 0) {
     return null;
   }
@@ -52,16 +52,24 @@ reg.RidgeReg.prototype.predict = function(eyesObj) {
   var screenYArray = this.screenYClicksArray.data.concat(trailY);
   var eyeFeatures = this.eyeFeaturesClicks.data.concat(trailFeat);
 
-  var coefficientsX = util_regression.ridge(screenXArray, eyeFeatures, this.ridgeParameter);
-  var coefficientsY = util_regression.ridge(screenYArray, eyeFeatures, this.ridgeParameter);
+  var coefficientsX = util_regression.ridge(
+    screenXArray,
+    eyeFeatures,
+    this.ridgeParameter
+  );
+  var coefficientsY = util_regression.ridge(
+    screenYArray,
+    eyeFeatures,
+    this.ridgeParameter
+  );
 
   var eyeFeats = util.getEyeFeats(eyesObj);
   var predictedX = 0;
-  for(var i=0; i< eyeFeats.length; i++){
+  for (var i = 0; i < eyeFeats.length; i++) {
     predictedX += eyeFeats[i] * coefficientsX[i];
   }
   var predictedY = 0;
-  for(var i=0; i< eyeFeats.length; i++){
+  for (var i = 0; i < eyeFeats.length; i++) {
     predictedY += eyeFeats[i] * coefficientsY[i];
   }
 
@@ -75,12 +83,12 @@ reg.RidgeReg.prototype.predict = function(eyesObj) {
 
     return {
       x: newGaze[0],
-      y: newGaze[1]
+      y: newGaze[1],
     };
   } else {
     return {
       x: predictedX,
-      y: predictedY
+      y: predictedY,
     };
   }
 };
@@ -91,14 +99,14 @@ reg.RidgeReg.prototype.setData = util_regression.setData;
  * Return the data
  * @returns {Array.<Object>|*}
  */
-reg.RidgeReg.prototype.getData = function() {
+reg.RidgeReg.prototype.getData = function () {
   return this.dataClicks.data;
-}
+};
 
 /**
  * The RidgeReg object name
  * @type {string}
  */
-reg.RidgeReg.prototype.name = 'ridge';
+reg.RidgeReg.prototype.name = "ridge";
 
 export default reg;
