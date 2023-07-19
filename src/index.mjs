@@ -385,6 +385,17 @@ var recordScreenPosition = function (x, y, eventType) {
   }
 };
 
+function cleanOldData(data) {
+  const maxLength = 500;
+  if (data.length > maxLength) {
+    // truncate the data, keep from end, remove from beginning
+    data = data.slice(data.length - maxLength);
+    // const modelSize = JSON.stringify(data).length / 1000000;
+    // console.log(`Data points: ${data.length} | Model size: ${modelSize} MB`);
+  }
+  return data;
+}
+
 /**
  * Records click data and passes it to the regression model
  * @param {Event} event - The listened event
@@ -395,9 +406,6 @@ var clickListener = async function (event) {
   if (webgazer.params.saveDataAcrossSessions) {
     // Each click stores the next data point into localforage.
     await setGlobalData();
-
-    // // Debug line
-    // console.log('Model size: ' + JSON.stringify(await localforage.getItem(localstorageDataLabel)).length / 1000000 + 'MB');
   }
 };
 
@@ -451,6 +459,7 @@ async function loadGlobalData() {
   // Get click data from localforage
   var loadData = await localforage.getItem(localstorageDataLabel);
   loadData = loadData || defaults;
+  loadData = cleanOldData(loadData);
 
   // Set global var data to newly loaded data
   data = loadData;
@@ -469,6 +478,7 @@ async function loadGlobalData() {
 async function setGlobalData() {
   // Grab data from regression model
   var storeData = regs[0].getData() || data; // Array
+  storeData = cleanOldData(storeData);
 
   // Store data into localforage
   localforage.setItem(localstorageSettingsLabel, settings); // [20200605 XK] is 'settings' ever being used?
